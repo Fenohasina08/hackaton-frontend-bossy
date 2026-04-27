@@ -40,42 +40,42 @@ const Signin = () => {
             <p className="text-white text-sm">Sign in to continue</p>
           </div>
 
-           <form className="space-y-4">
+            <form className="space-y-4">
 
-             <div className="relative">
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
-              />
-            </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Email or Username"
+                  className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
+                />
+              </div>
 
-            {/* password */}
-            <div className="relative">
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
-              />
-            </div>
+              <div className="relative">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
+                />
+              </div>
 
-             <button
-              type="button"
-              className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold"
-            >
-              Sign In
-            </button>
+              <button
+                type="button"
+                className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold"
+              >
+                Sign In
+              </button>
 
-             <p className="text-white text-center mt-3">
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                className="text-cyan-300 cursor-pointer hover:underline"
+              <p className="text-white text-center mt-3">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="text-cyan-300 cursor-pointer hover:underline"
                 >
-                Sign Up
-              </Link>
-            </p>
-          </form>
+                  Sign Up
+                </Link>
+              </p>
+
+            </form>
 
           {/* google button */}
           <div className="mt-6">
