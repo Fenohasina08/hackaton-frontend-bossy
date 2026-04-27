@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* 1. Define variables */
+:root {
+  --color-primary: #0B1120;
+  --color-secondary: #06B6D4;
+  --color-button: #3B82F6;
+  --color-accent-blue: #2563EB;
+  --color-accent-indigo: #4F46E5;
+  --color-background: #0B1120;
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-dark: #111827;
+  --color-neutral-mid: #6B7280;
+  --color-neutral-light: #D1D5DB;
+  --color-button-hover: #1D4ED8;
+  --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-text: #FFFFFF;
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* 2. Expose to Tailwind */
+@theme {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-button: var(--color-button);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-accent-indigo: var(--color-accent-indigo);
+  --color-background: var(--color-background);
+  --color-neutral-white: var(--color-neutral-white);
+  --color-neutral-dark: var(--color-neutral-dark);
+  --color-neutral-mid: var(--color-neutral-mid);
+  --color-neutral-light: var(--color-neutral-light);
+  --color-button-hover: var(--color-button-hover);
+  --color-input-text: var();
+  --color-textColor: var(--color-text);
+  --font-sans: var(--font-family-sans);
+}
