@@ -58,12 +58,12 @@ const Signin = () => {
                 />
               </div>
 
-              <button
-                type="button"
-                className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold"
-              >
+              <Link
+                to="/"
+                className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold flex items-center justify-center"
+                  >
                 Sign In
-              </button>
+              </Link>
 
               <p className="text-white text-center mt-3">
                 Don't have an account?{" "}

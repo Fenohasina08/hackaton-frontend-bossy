@@ -8,20 +8,20 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Redirection vers home */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
-          <Route path="home" element={<Home />} />
+          {/* Home devient la page par défaut */}
+          <Route index element={<Home />} />
         </Route>
 
         {/* Auth routes */}
-        <Route path="/login" element={<Signin />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
 
         {/* fallback */}
-        <Route path="*" element={<Navigate to="/home" />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
     </Router>
   );
