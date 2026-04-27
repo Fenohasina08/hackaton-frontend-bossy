@@ -1,5 +1,5 @@
-// src/components/Header.jsx
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, Filter, Sun, Moon, Globe, User, LogOut } from 'lucide-react';
 
 export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLang, lang }) {
@@ -7,6 +7,7 @@ export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLan
 
   return (
     <header className="h-16 glass flex items-center justify-between px-6 border-b border-neutral-dark z-40">
+      
       {/* Search area */}
       <div className="relative">
         <button 
@@ -30,21 +31,37 @@ export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLan
 
       <div className="flex items-center gap-3">
         <button onClick={toggleTheme} className="p-2 bg-neutral-dark rounded-lg hover:bg-neutral-white/10">
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
+
         <button onClick={toggleLang} className="px-3 py-1 bg-neutral-dark rounded-lg text-sm font-bold hover:bg-neutral-white/10">
-            {lang.toUpperCase()}
+          {lang.toUpperCase()}
         </button>
         
         {isAuthenticated ? (
           <div className="flex items-center gap-3 ml-4">
-            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"><User size={16}/></div>
-            <button className="flex items-center gap-2 text-sm text-red-400"><LogOut size={16}/>Logout</button>
+            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+              <User size={16}/>
+            </div>
+            <button className="flex items-center gap-2 text-sm text-red-400">
+              <LogOut size={16}/> Logout
+            </button>
           </div>
         ) : (
           <div className="flex gap-2 ml-4">
-            <button className="px-4 py-1 bg-secondary rounded-lg text-sm font-bold">Login</button>
-            <button className="px-4 py-1 bg-secondary rounded-lg text-sm font-bold">Sign Up</button>
+            <Link
+              to="/signin"
+              className="px-4 py-1 bg-secondary rounded-lg text-sm font-bold"
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/signup"
+              className="px-4 py-1 bg-secondary rounded-lg text-sm font-bold"
+            >
+              Sign Up
+            </Link>
           </div>
         )}
       </div>
