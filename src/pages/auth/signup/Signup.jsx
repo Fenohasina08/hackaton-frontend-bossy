@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSubmit = () => {
+    if (password !== confirmPassword) {
+      setShowPopup(true);
+      return;
+    }
+    setShowPopup(false);
+  };
+
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 relative overflow-hidden">
-
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-10 left-10 w-20 h-20 bg-cyan-400/30 rounded-full"></div>
         <div className="absolute top-32 right-20 w-16 h-16 bg-cyan-500/25 rounded-full"></div>
@@ -29,7 +40,6 @@ const Signup = () => {
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
         <div className="w-full max-w-md bg-indigo-900/30 p-8 rounded-3xl backdrop-blur-sm">
-
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-cyan-300 mb-2">
               PlanTracker
@@ -40,7 +50,6 @@ const Signup = () => {
           </div>
 
           <form className="space-y-4">
-
             <input
               type="text"
               placeholder="Username"
@@ -56,17 +65,30 @@ const Signup = () => {
             <input
               type="password"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
             />
 
             <input
               type="password"
               placeholder="Confirm Password"
-              className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={`w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none ${
+                confirmPassword && password !== confirmPassword ? "border border-red-500" : ""
+              }`}
             />
+
+            {confirmPassword && password !== confirmPassword && (
+              <p className="text-red-400 text-sm mt-1">
+                Passwords do not match
+              </p>
+            )}
 
             <button
               type="button"
+              onClick={handleSubmit}
               className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold"
             >
               Create Account
@@ -74,17 +96,14 @@ const Signup = () => {
 
             <p className="text-white text-center mt-3">
               Already have an account?{" "}
-              
               <Link
                 to="/Signin"
                 className="text-cyan-300 cursor-pointer hover:underline"
-                >
+              >
                 Sign In
               </Link>
             </p>
-
           </form>
-
         </div>
       </div>
     </div>
