@@ -105,7 +105,7 @@ const Setting = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-gray-400">Username</p>
+                    <p className="text-gray-400">Change username</p>
                     <input
                       type="text"
                       placeholder="Enter username"
@@ -115,7 +115,7 @@ const Setting = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-gray-400">Email</p>
+                    <p className="text-gray-400">Change email</p>
                     <input
                       type="email"
                       placeholder="Enter email"
