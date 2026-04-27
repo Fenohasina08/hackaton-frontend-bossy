@@ -20,6 +20,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+  --color-neutral-yellow:#f8e623;
 }
 
 /* 2. Expose to Tailwind */
@@ -38,4 +39,5 @@
   --color-input-text: var();
   --color-textColor: var(--color-text);
   --font-sans: var(--font-family-sans);
+  --color-neutral-yellow: var(--color-neutral-yellow)
 }
