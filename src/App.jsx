@@ -4,10 +4,18 @@ import Home from "./pages/Home";
 import Signin from "./pages/auth/login/Signin";
 import Signup from "./pages/auth/signup/Signup";
 
-export default function App() {
+import SignIn from "./pages/auth/login/Signin";
+import SignUp from "./pages/auth/signup/Signup";
+import UniversitiesPage from "./pages/UniversitiesPage";
+
+function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/universities" element={<UniversitiesPage />} />
 
         {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
