@@ -13,7 +13,7 @@ export default function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const linkClass = ({ isAcsopatektive }) =>
+  const linkClass = ({ isActive }) =>
     `flex items-center gap-3 p-4 mx-2 rounded-xl transition-all duration-300 ${isActive ? 'bg-secondary/20 text-secondary' : 'text-neutral-light hover:bg-neutral-white/5'}`;
 
   return (
