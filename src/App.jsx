@@ -1,30 +1,28 @@
-// src/App.jsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import NavigationLayout from "./layouts/NavigationLayout";
 import Home from "./pages/Home";
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import SignIn from "./pages/auth/login/Signin";
-import SignUp from "./pages/auth/signup/Signup";
+import Signin from "./pages/auth/login/Signin";
+import Signup from "./pages/auth/signup/Signup";
 
 export default function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirection vers home */}
         <Route path="/" element={<Navigate to="/home" replace />} />
+
+        {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
           <Route path="home" element={<Home />} />
-          {/* ... autres routes */}
         </Route>
+
+        {/* Auth routes */}
+        <Route path="/login" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </Router>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/Signup" element={<SignUp />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
   );
 }
