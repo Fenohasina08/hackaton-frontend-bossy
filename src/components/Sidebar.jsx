@@ -13,7 +13,7 @@ export default function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const linkClass = ({ isActive }) =>
+  const linkClass = ({ isAcsopatektive }) =>
     `flex items-center gap-3 p-4 mx-2 rounded-xl transition-all duration-300 ${isActive ? 'bg-secondary/20 text-secondary' : 'text-neutral-light hover:bg-neutral-white/5'}`;
 
   return (
@@ -44,7 +44,7 @@ export default function Sidebar() {
       
       {/* Settings fixé en bas (hors du bloc scrollable) */}
       <div className="mt-auto p-4 border-t border-neutral-dark">
-        <NavLink to="/settings" className={linkClass}>
+        <NavLink to="/Settings" className={linkClass}>
           <Settings size={20} /> {!isCollapsed && <span>Settings</span>}
         </NavLink>
       </div>
