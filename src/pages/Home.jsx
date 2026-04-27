@@ -1,10 +1,9 @@
-import { useState } from "react";
-
+// src/pages/Home.jsx
 export default function Home() {
- return (
-   <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 relative overflow-hidden text-black">
-     <p>Home</p>
-   </div>
- );
+  return (
+    <div className="text-white">
+      <h1>Home Page</h1>
+      <p>Bienvenue sur votre application.</p>
+    </div>
+  );
 }
-
