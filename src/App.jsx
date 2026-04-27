@@ -1,8 +1,18 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import SignIn from "./pages/auth/login/Signin";
+import SignUp from "./pages/auth/signup/Signup";
 
 function App() {
   return (
-     <div><p className=''>fuck</p></div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
