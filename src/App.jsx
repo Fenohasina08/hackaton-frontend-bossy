@@ -9,22 +9,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Pages d'Authentification (Hors du Layout) */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-
-        <Route path="/" element={<NavigationLayout />}>
-          {/* Redirection de la racine vers /home */}
-          <Route index element={<Navigate to="/home" replace />} />
-          <Route path="home" element={<Home />} />
-          
-
-        </Route>
-
-        {/* Redirection pour les routes inconnues vers home */}
-        <Route path="*" element={<Navigate to="/home" replace />} />
-        <Route path="/" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/universities" element={<UniversitiesPage />} />
 
