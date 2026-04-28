@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authAPI } from '../api/auth';
+import { authAPI } from '../services/auth';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -85,6 +85,10 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     toast.success('Déconnecté avec succès');
+  };
+
+  const isAdmin = () => {
+    return user?.role === 'ADMIN';
   };
 
   const value = {
