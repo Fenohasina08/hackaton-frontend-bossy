@@ -1,7 +1,7 @@
 // pages/admin/AdminLogin.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthProvider';
+import { useAuth } from '../../context/AuthContext';
 import { Shield, Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Moon, Sun } from 'lucide-react';
 import ThreeBackground from '../../components/ThreeBackground';
 import toast from 'react-hot-toast';
