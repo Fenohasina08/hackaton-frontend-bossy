@@ -189,7 +189,7 @@ export default function UniversitiesPage() {
   </div>
 
   <div className="grid md:grid-cols-4 gap-5 justify-items-center w-full max-w-7xl mx-auto">
-    {universities.slice(0, 4).map((uni) => (
+    {universities.slice(0, 8).map((uni) => (
   <UniversityCard key={uni.id} university={uni} />
 ))}
   </div>
