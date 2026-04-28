@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://i-bosy-backend.onrender.com';
+const API_URL = import.meta.env.VITE_API_URL || 'https://i-bosy-backend.onrender.com/api';
 console.log(import.meta.env.VITE_API_URL);
 
 const apiClient = axios.create({

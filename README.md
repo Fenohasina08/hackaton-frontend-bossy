@@ -1,16 +1,65 @@
-# React + Vite
+# Hackaton Frontend Bossy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application web permettant de consulter, filtrer et explorer une liste d’universités avec pagination, authentification et gestion des utilisateurs.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Démo
 
-## React Compiler
+Frontend :
+https://hackaton-frontend-bossy-ipgd.vercel.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Backend :
+https://i-bosy-backend.onrender.com
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stack technique
+
+- React
+- Vite
+- Axios
+- React Router DOM
+- Tailwind CSS
+- Node.js (backend)
+- Express
+- PostgreSQL
+
+---
+
+## Fonctionnalités
+
+- Authentification (login / register)
+- Liste des universités
+- Filtres dynamiques
+- Pagination
+- Appels API avec Axios
+- Gestion des erreurs API
+- Interface responsive
+
+---
+
+## Installation du projet
+
+### 1. Cloner le projet
+
+```bash
+git clone https://github.com/Fenohasina08/hackaton-frontend-bossy.git (frontend)
+git clone https://github.com/ChristianMDG/i-bosy-backend (backend)
+
+cd hackaton-frontend-bossy
+cd i-bosy-backend
+
+## Liste des tâches de chaque personne
+
+### Équipe Backend
+
+- David : admin  
+- Christian : déploiement backend, création endpoint university  
+- Valisoa : user management  
+
+### Équipe Frontend
+
+- Asmine : university details (with Valisoa)  
+- Zinedis : header and sidebar  
+- Fenohasina : connectivity  
