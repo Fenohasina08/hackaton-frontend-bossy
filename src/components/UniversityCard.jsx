@@ -3,7 +3,7 @@ import { Globe, MapPin, Star } from "lucide-react";
 
 export default function UniversityCard({ university }) {
   return (
-    <div className="bg-neutral-dark text-neutral-white rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
+    <div className="bg-neutral-dark text-neutral-white border-1 border-neutral-light  rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
 
    
       <div className="flex flex-col gap-1">
