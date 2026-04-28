@@ -4,7 +4,7 @@ import Header from '../../components/Header';
 import SidebarAdmin from '../../pages/admin/AdminSidebar';
 
 export default function AdminLayout() {
-  const [isAuthenticated] = useState(false); // Remplacez par votre logique AuthContext
+  const [isAuthenticated] = useState(false);
   const [isDark, setIsDark] = useState(true);
   const [lang, setLang] = useState('fr');
 
