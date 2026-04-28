@@ -1,28 +1,35 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NavigationLayout from "./layouts/NavigationLayout";
 import Home from "./pages/Home";
-import SignIn from "./pages/auth/login/Signin";
-import SignUp from "./pages/auth/signup/Signup";
+import Signin from "./pages/auth/login/Signin";
+import Signup from "./pages/auth/signup/Signup";
+import UniversitiesPage from "./pages/UniversitiesPage";
+import Setting from "./components/Setting";
+import Temoignages from "./pages/Temoignages";
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Pages d'Authentification (Hors du Layout) */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
 
+        {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
-          {/* Redirection de la racine vers /home */}
-          <Route index element={<Navigate to="/home" replace />} />
-          <Route path="home" element={<Home />} />
-          
-
+          <Route index element={<Home />} />
         </Route>
 
-        {/* Redirection pour les routes inconnues vers home */}
-        <Route path="*" element={<Navigate to="/home" replace />} />
+        {/* Pages publiques */}
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+
+        <Route path="/universities" element={<UniversitiesPage />} />
+        <Route path="/settings" element={<Setting />} />
+        <Route path="/temoignages" element={<Temoignages />} />
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
     </BrowserRouter>
   );
 }
+
+export default App;

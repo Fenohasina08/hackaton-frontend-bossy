@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
 
   const handleSubmit = () => {
     if (password !== confirmPassword) {
@@ -57,10 +58,20 @@ const Signup = () => {
             />
 
             <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none"
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={`w-full px-4 py-3 rounded-xl bg-indigo-700/40 text-white outline-none ${
+            email && !email.endsWith("@gmail.com") ? "border border-red-500" : ""
+            }`}
             />
+
+            {email && !email.endsWith("@gmail.com") && (
+            <p className="text-red-400 text-sm mt-1">
+            Email must end with @gmail.com
+            </p>
+            )}
 
             <input
               type="password"

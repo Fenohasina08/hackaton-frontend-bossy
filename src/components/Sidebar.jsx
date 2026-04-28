@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BookOpen, Compass, GraduationCap, Info, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
+import Setting from './Setting'; // adjust path if needed
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsCollapsed(window.innerWidth < 768);

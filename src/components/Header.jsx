@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Search, Filter, Sun, Moon, Globe, User, LogOut, CheckSquare, Square, X } from 'lucide-react';
 
 export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLang, lang }) {
@@ -7,6 +7,32 @@ export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLan
   const [ecolage, setEcolage] = useState('');
 
   const toggleFilter = (key) => setFilters(prev => ({ ...prev, [key]: !prev[key] }));
+
+  // Immediately apply the theme class to the root element
+  const applyThemeToDocument = (dark) => {
+    if (dark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      // Optionally inject a CSS variable directly:
+      // document.documentElement.style.setProperty('--theme', 'dark');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      // document.documentElement.style.setProperty('--theme', 'light');
+    }
+  };
+
+  // Sync the theme on mount and whenever isDark changes
+  useEffect(() => {
+    applyThemeToDocument(isDark);
+  }, [isDark]);
+
+  // Local handler that applies the theme AND notifies the parent
+  const handleToggleTheme = () => {
+    const nextDark = !isDark;
+    applyThemeToDocument(nextDark);
+    toggleTheme(); // inform the parent for persistence
+  };
 
   return (
     <header className="h-16 glass flex items-center justify-between px-4 md:px-6 border-b border-neutral-dark z-40 relative">
