@@ -1,20 +1,8 @@
 @import "tailwindcss";
 
-/* 1. Define variables */
+/* 1. Variables communes (police, breakpoints, etc.) */
 :root {
-  --color-primary: #0B1120;
-  --color-secondary: #06B6D4;
-  --color-button: #3B82F6;
-  --color-accent-blue: #2563EB;
-  --color-accent-indigo: #4F46E5;
-  --color-background: #0B1120;
-  --color-neutral-white: #FFFFFF;
-  --color-neutral-dark: #111827;
-  --color-neutral-mid: #6B7280;
-  --color-neutral-light: #D1D5DB;
-  --color-button-hover: #1D4ED8;
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --color-text: #FFFFFF;
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -23,7 +11,43 @@
   --color-neutral-yellow:#f8e623;
 }
 
-/* 2. Expose to Tailwind */
+/* 2. Thème clair complet */
+:root.light {
+  --color-primary: #FFFFFF;
+  --color-secondary: #06B6D4;      /* cyan */
+  --color-button: #3B82F6;         /* blue */
+  --color-accent-blue: #2563EB;
+  --color-accent-indigo: #4F46E5;
+  --color-background: #F9FAFB;     /* gris très clair */
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-dark: #E5E7EB;   /* gris clair (arrière-plan) */
+  --color-neutral-mid: #6B7280;
+  --color-neutral-light: #1F2937;  /* texte foncé */
+  --color-button-hover: #1D4ED8;
+  --color-text: #1F2937;
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  --border-color: #D1D5DB;
+}
+
+/* 3. Thème sombre complet */
+:root.dark {
+  --color-primary: #0B1120;
+  --color-secondary: #06B6D4;
+  --color-button: #3B82F6;
+  --color-accent-blue: #2563EB;
+  --color-accent-indigo: #4F46E5;
+  --color-background: #0B1120;
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-dark: #111827;    /* fond plus sombre */
+  --color-neutral-mid: #6B7280;
+  --color-neutral-light: #D1D5DB;   /* texte clair */
+  --color-button-hover: #1D4ED8;
+  --color-text: #FFFFFF;
+  --bg-glass: rgba(17, 24, 39, 0.7);
+  --border-color: #374151;
+}
+
+/* 4. Exposition à Tailwind via @theme */
 @theme {
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
@@ -36,7 +60,6 @@
   --color-neutral-mid: var(--color-neutral-mid);
   --color-neutral-light: var(--color-neutral-light);
   --color-button-hover: var(--color-button-hover);
-  --color-input-text: var();
   --color-textColor: var(--color-text);
   --font-sans: var(--font-family-sans);
   --color-neutral-yellow: var(--color-neutral-yellow)
