@@ -7,23 +7,28 @@ import RevealOnScroll from "../components/RevealOnScroll";
 
 export default function Home() {
   return (
-    <div className="flex flex-col ml-[-5vw] w-[100%]">
-       <section className="w-full min-h-[20vh]">
+    <div className="flex flex-col min-h-screen">
+      {/* Section Hero */}
+      <section className="w-full min-h-[20vh]">
         <Hero />
       </section>
 
-      
-        <section className="w-full min-h-[50vh]">
-          <UniversitiesPage limit={5} />
-        </section>
-      
+      {/* Section Universités */}
+      <section className="w-full py-10">
+        <div className="container mx-auto px-4">
+          <UniversitiesPage limit={4} />
+        </div>
+      </section>
 
-        <section className="w-full min-h-[30vh]">
-          <Temoignages />
-        </section>
-        <section className="w-[87.5vw] ml-[2vw]">
-          <Footer />
-        </section>
+      {/* Section Témoignages */}
+      <section className="w-full min-h-[30vh]">
+        <Temoignages />
+      </section>
+
+      {/* Section Footer */}
+      <section className="w-full mt-auto">
+        <Footer />
+      </section>
     </div>
   );
 }

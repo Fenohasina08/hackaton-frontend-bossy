@@ -1,7 +1,7 @@
 // src/pages/UniversitiesPage.jsx
 import React, { useState, useEffect } from "react";
 import UniversityCard from "../components/UniversityCard";
-import { Search, Filter, MapPin, GraduationCap, DollarSign, Star } from 'lucide-react';
+import { Search, Filter, MapPin, GraduationCap, DollarSign, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { universitiesAPI } from "../services/universities";
 
 export default function UniversitiesPage() {
@@ -15,6 +15,12 @@ export default function UniversitiesPage() {
   const [priceRange, setPriceRange] = useState([0, 4000000]);
   const [showFilters, setShowFilters] = useState(false);
   
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+  
   const [locations, setLocations] = useState([]);
   const [fields, setFields] = useState([]);
 
@@ -22,7 +28,7 @@ export default function UniversitiesPage() {
   useEffect(() => {
     fetchUniversities();
     fetchFiltersOptions();
-  }, [searchTerm, selectedLocation, selectedField, priceRange]);
+  }, [searchTerm, selectedLocation, selectedField, priceRange, currentPage, itemsPerPage]);
 
   const fetchUniversities = async () => {
     try {
@@ -30,8 +36,8 @@ export default function UniversitiesPage() {
       setError(null);
       
       const params = {
-        page: 1,
-        limit: 50,
+        page: currentPage,
+        limit: itemsPerPage,
         ...(searchTerm && { search: searchTerm }),
         ...(selectedLocation && { location: selectedLocation }),
         ...(selectedField && { field: selectedField }),
@@ -56,6 +62,8 @@ export default function UniversitiesPage() {
       }));
       
       setUniversities(formattedUniversities);
+      setTotalResults(response.data.data.pagination.total || formattedUniversities.length);
+      setTotalPages(response.data.data.pagination.pages || 1);
     } catch (err) {
       console.error("Erreur:", err);
       setError("Impossible de charger les universités");
@@ -92,6 +100,35 @@ export default function UniversitiesPage() {
     
     return matchesSearch && matchesLocation && matchesField && matchesPrice;
   });
+
+  // Générer les numéros de page à afficher
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+    
+    if (endPage - startPage + 1 < maxVisible) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(1);
+  };
 
   if (loading && universities.length === 0) {
     return (
@@ -203,11 +240,24 @@ export default function UniversitiesPage() {
           </div>
         )}
 
-        {/* Results Count */}
-        <div className="mb-6 text-center">
+        {/* Results Count and Items Per Page */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <p className="text-gray-600 dark:text-gray-400">
-            {filteredUniversities.length} université(s) trouvée(s)
+            {totalResults} université(s) trouvée(s)
           </p>
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-600 dark:text-gray-400">Afficher :</label>
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="px-3 py-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={8}>8</option>
+              <option value={12}>12</option>
+              <option value={24}>24</option>
+              <option value={36}>36</option>
+            </select>
+          </div>
         </div>
 
         {/* Universities Grid */}
@@ -222,11 +272,71 @@ export default function UniversitiesPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredUniversities.map((uni) => (
-              <UniversityCard key={uni.id} university={uni} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredUniversities.map((uni) => (
+                <UniversityCard key={uni.id} university={uni} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-10">
+                {/* Bouton Première page */}
+                <button
+                  onClick={() => handlePageChange(1)}
+                  disabled={currentPage === 1}
+                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4 -ml-2" />
+                </button>
+                
+                {/* Bouton Précédent */}
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                
+                {/* Numéros de page */}
+                {getPageNumbers().map(pageNum => (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`w-10 h-10 rounded-lg transition ${
+                      currentPage === pageNum
+                        ? 'bg-blue-600 text-white'
+                        : 'border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+                
+                {/* Bouton Suivant */}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+                
+                {/* Bouton Dernière page */}
+                <button
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 -ml-2" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
