@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://i-bosy-backend.onrender.com';
-
+console.log(import.meta.env.VITE_API_URL);
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
