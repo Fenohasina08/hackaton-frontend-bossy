@@ -1,69 +1,111 @@
-import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { BookOpen, Compass, GraduationCap, Info, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
-import Setting from './Setting'; // adjust path if needed
+import { useState,useEffect } from 'react';
+import { Search, Filter, Sun, Moon, Globe, User, LogOut, CheckSquare, Square, X } from 'lucide-react';
 
-export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLang, lang }) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [filters, setFilters] = useState({ universities: false, orientation: false, formation: false });
+  const [ecolage, setEcolage] = useState('');
 
+  const toggleFilter = (key) => setFilters(prev => ({ ...prev, [key]: !prev[key] }));
+
+  // Immediately apply the theme class to the root element
+  const applyThemeToDocument = (dark) => {
+    if (dark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      // Optionally inject a CSS variable directly:
+      // document.documentElement.style.setProperty('--theme', 'dark');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      // document.documentElement.style.setProperty('--theme', 'light');
+    }
+  };
+
+  // Sync the theme on mount and whenever isDark changes
   useEffect(() => {
-    const handleResize = () => setIsCollapsed(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    applyThemeToDocument(isDark);
+  }, [isDark]);
 
-  const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 p-4 mx-2 rounded-xl transition-all duration-300 whitespace-nowrap overflow-hidden ${
-      isActive 
-        ? 'bg-secondary/20 text-secondary border border-secondary/50' 
-        : 'hover:bg-neutral-white/5 text-neutral-light'
-    }`;
+  // Local handler that applies the theme AND notifies the parent
+  const handleToggleTheme = () => {
+    const nextDark = !isDark;
+    applyThemeToDocument(nextDark);
+    toggleTheme(); // inform the parent for persistence
+  };
 
   return (
-    <nav className={`flex flex-col h-full glass transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+    <header className="h-16 glass flex items-center justify-between px-4 md:px-6 border-b border-neutral-dark z-40 relative">
       
-      {/* Header : Logo disparaît quand isCollapsed est true */}
-      <div className="p-6 flex items-center justify-between shrink-0">
-        {!isCollapsed && (
-          <span className="font-bold text-transparent bg-clip-text bg-linear-to-r from-secondary to-accent-blue text-xl">
-            MY APP
-          </span>
-        )}
+      {/* Overlay pour fermer la recherche */}
+      {isSearchOpen && <div className="fixed inset-0 z-40" onClick={() => setIsSearchOpen(false)}></div>}
+
+      {/* Barre de recherche : s'adapte à la largeur */}
+      <div className="flex-1 max-w-lg md:max-w-2xl mx-2 md:mx-auto px-2 relative z-50">
         <button 
-          onClick={() => setIsCollapsed(!isCollapsed)} 
-          className="p-1.5 rounded-lg bg-neutral-white/5 hover:bg-neutral-white/10 text-neutral-light transition-colors ml-auto"
+          onClick={() => setIsSearchOpen(!isSearchOpen)} 
+          className="w-full flex items-center gap-3 bg-neutral-dark p-2.5 md:p-3 rounded-xl text-neutral-light border border-neutral-white/10 hover:border-secondary/50 transition-all"
         >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+          <Search size={20} /> <span className="hidden md:inline">Search content...</span>
         </button>
+        
+        {isSearchOpen && (
+          <div className="absolute top-16 left-0 w-full glass p-4 md:p-6 rounded-2xl border border-neutral-white/10 shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-white font-bold">Search & Filters</h3>
+              <button onClick={() => setIsSearchOpen(false)}><X size={20} /></button>
+            </div>
+            <input type="text" autoFocus placeholder="Type your search..." className="w-full bg-neutral-dark/50 text-white p-3 mb-6 rounded-xl outline-none border border-secondary/30" />
+            
+            <div className="flex flex-wrap gap-4 mb-6">
+              <span className="text-neutral-mid text-sm w-full">Category:</span>
+              {Object.keys(filters).map((key) => (
+                <button key={key} onClick={() => toggleFilter(key)} className="flex items-center gap-2 text-sm text-neutral-white">
+                  {filters[key] ? <CheckSquare size={18} className="text-secondary" /> : <Square size={18} />}
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <span className="text-neutral-mid text-sm">Écolage:</span>
+              <div className="flex flex-wrap gap-2">
+                {['< 1.200.000', '> 1.200.000', '1.2M - 1.8M'].map((range) => (
+                  <button key={range} onClick={() => setEcolage(range)} className={`px-3 py-1 rounded-lg text-xs border ${ecolage === range ? 'bg-secondary text-primary border-secondary' : 'bg-neutral-dark border-neutral-mid'}`}>
+                    {range}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Liste principale */}
-      <ul className="flex-1 space-y-2 overflow-y-auto py-2">
-        {[
-          { to: "/home", icon: <LayoutDashboard size={20} />, label: "Home" },
-          { to: "/universities", icon: <BookOpen size={20} />, label: "Universities" },
-          { to: "/orientation", icon: <Compass size={20} />, label: "Orientation" },
-          { to: "/formation", icon: <GraduationCap size={20} />, label: "Formation" },
-          { to: "/about", icon: <Info size={20} />, label: "About" },
-        ].map((item) => (
-          <li key={item.to}>
-            <NavLink to={item.to} className={linkClass}>
-              <span className="shrink-0">{item.icon}</span>
-              {!isCollapsed && <span className="transition-opacity duration-300">{item.label}</span>}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      {/* Actions droite : masquées ou réduites sur mobile */}
+      <div className="flex items-center gap-2 md:gap-3 z-50">
+        <button onClick={toggleTheme} className="p-2 bg-neutral-dark rounded-lg transition-colors">
+          {isDark ? <Moon size={18} className="text-white" /> : <Sun size={18} className="text-yellow-400" />}
+        </button>
 
-      {/* Settings : Fixé en bas, toujours visible */}
-      <div className="mt-auto border-t border-neutral-white/10 pt-2 shrink-0">
-        <NavLink to="/settings" className={linkClass}>
-          <span className="shrink-0"><Settings size={20} /></span>
-          {!isCollapsed && <span className="transition-opacity duration-300">Settings</span>}
-        </NavLink>
+        <button onClick={toggleLang} className="hidden md:flex items-center gap-1 px-3 py-1 bg-neutral-dark rounded-lg text-sm font-bold hover:bg-neutral-white/10">
+          <Globe size={16} /> 
+          <span className={lang === 'fr' ? 'text-yellow-400' : 'text-neutral-mid'}>FR</span>
+          <span>/</span>
+          <span className={lang === 'en' ? 'text-yellow-400' : 'text-neutral-mid'}>EN</span>
+        </button>
+        
+        {isAuthenticated ? (
+          <div className="flex items-center gap-2 md:gap-3 ml-2 md:ml-4">
+            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"><User size={16}/></div>
+            <button className="hidden md:flex text-sm text-red-400 items-center gap-2"><LogOut size={16}/>Logout</button>
+          </div>
+        ) : (
+          <div className="flex gap-1 md:gap-2 ml-2 md:ml-4">
+            <button className="px-3 md:px-4 py-2 bg-secondary text-primary rounded-lg text-xs md:text-sm font-bold hover:opacity-90 transition-all">Sign In</button>
+            <button className="hidden md:block px-4 py-2 bg-secondary text-primary rounded-lg text-sm font-bold hover:opacity-90 transition-all">Sign Up</button>
+          </div>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }
