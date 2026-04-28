@@ -86,7 +86,7 @@ const MOCK_RESULT = {
   weaknesses: ['Communication', 'Travail d\'équipe']
 };
 
-export const Orientation = () => {
+export default function Orientation() {
   const [step, setStep] = useState('home'); // home, session, result
   const [quizData, setQuizData] = useState({
     questions: [],
