@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import RevealOnScroll from "../components/RevealOnScroll";
 
-export default function About() {
+export default function Formation() {
   return (
     <div className="flex flex-col">
       there is no formation yet
