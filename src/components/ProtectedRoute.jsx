@@ -1,12 +1,13 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-900 to-black">
+ 
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
       </div>
     );
@@ -16,7 +17,7 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
     return <Navigate to="/admin/login" replace />;
   }
 
-  if (requireAdmin && !isAdmin()) {
+  if (requireAdmin && user?.role !== "ADMIN") {
     return <Navigate to="/" replace />;
   }
 

@@ -1,26 +1,13 @@
 // src/layouts/NavigationLayout.jsx
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 export default function NavigationLayout() {
-  const [isAuthenticated] = useState(false); // Remplacez par votre logique AuthContext
-  const [isDark, setIsDark] = useState(true);
-  const [lang, setLang] = useState('fr');
-
   return (
-    <div className={`${isDark ? 'dark' : ''} flex h-screen bg-background text-neutral-white`}>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header 
-          isAuthenticated={isAuthenticated}
-          toggleTheme={() => setIsDark(!isDark)} 
-          isDark={isDark} 
-          toggleLang={() => setLang(lang === 'fr' ? 'en' : 'fr')} 
-          lang={lang} 
-        />
-        <main className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 ml-20 lg:ml-64 transition-all duration-300">
+        <main className="p-6">
           <Outlet />
         </main>
       </div>

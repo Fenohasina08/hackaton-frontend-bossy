@@ -1,232 +1,230 @@
-import React, { useState } from "react";
+// src/components/Setting.jsx
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/auth";
+import toast from "react-hot-toast";
+import { User, Mail, Lock, Save, X, Camera } from 'lucide-react';
 
 const Setting = ({ isOpen, onClose }) => {
-  // Which tab is open: "profile" or "password"
   const [activeTab, setActiveTab] = useState("profile");
-
-  // Profile form fields
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-
-  // Password form fields
+  const [avatar, setAvatar] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { user, updateUser, logout } = useAuth();
 
-  // Messages for errors and success
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  useEffect(() => {
+    if (user) {
+      setUsername(user.name || "");
+      setEmail(user.email || "");
+      setAvatar(user.avatar || "");
+    }
+  }, [user]);
 
-  // Save profile handler
-  const handleSaveProfile = () => {
-    alert("Profile saved!");
+  const handleSaveProfile = async () => {
+    setLoading(true);
+    try {
+      const response = await api.put("/auth/profile", { username });
+      if (response.data.success) {
+        updateUser({ ...user, name: username });
+        toast.success("Profile updated successfully!");
+      }
+    } catch (error) {
+      toast.error("Error updating profile");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Update password handler
-  const handleUpdatePassword = () => {
-    // Clear previous messages
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    // Validation
-    if (currentPassword === "") {
-      setErrorMessage("Current password required.");
-      return;
-    }
-    if (newPassword === "") {
-      setErrorMessage("New password required.");
+  const handleUpdatePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
     if (newPassword.length < 6) {
-      setErrorMessage("Minimum 6 characters.");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setErrorMessage("Passwords do not match.");
+      toast.error("Password must be at least 6 characters");
       return;
     }
 
-    // Success
-    setSuccessMessage("Password updated!");
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-
-    // Hide success message after 3 seconds
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 3000);
+    setLoading(true);
+    try {
+      const response = await api.post("/auth/change-password", {
+        currentPassword,
+        newPassword,
+      });
+      if (response.data.success) {
+        toast.success("Password updated successfully!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Error updating password");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Don't render anything if the modal is closed
+  const getInitials = () => {
+    if (username) return username.charAt(0).toUpperCase();
+    if (email) return email.charAt(0).toUpperCase();
+    return "U";
+  };
+
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Dark background overlay */}
       <div className="fixed inset-0 bg-black/60 z-40" onClick={onClose} />
-
-      {/* Modal container */}
       <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-        <div className="w-[700px] h-[500px] bg-[#2b2b2b] rounded-xl flex overflow-hidden shadow-xl pointer-events-auto">
+        <div className="w-[700px] h-[500px] bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl flex overflow-hidden shadow-2xl pointer-events-auto border border-gray-700">
           
-          {/* LEFT SIDEBAR */}
-          <div className="w-1/3 bg-[#242424] p-4 flex flex-col gap-2">
-            {/* Profile Tab Button */}
+          {/* Sidebar */}
+          <div className="w-1/3 bg-gray-900/50 p-4 flex flex-col gap-2 border-r border-gray-700">
             <button
-              onClick={() => {
-                setActiveTab("profile");
-                setErrorMessage("");
-                setSuccessMessage("");
-              }}
-              className={`p-2 rounded text-left transition-colors ${
+              onClick={() => setActiveTab("profile")}
+              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 activeTab === "profile"
-                  ? "bg-[#3a3a3a] text-white"
-                  : "text-gray-400 hover:bg-[#2f2f2f]"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg"
+                  : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
-              Profile
+              <User size={20} />
+              <span>Profile</span>
             </button>
-
-            {/* Change Password Tab Button */}
             <button
-              onClick={() => {
-                setActiveTab("password");
-                setErrorMessage("");
-                setSuccessMessage("");
-              }}
-              className={`p-2 rounded text-left transition-colors ${
+              onClick={() => setActiveTab("password")}
+              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 activeTab === "password"
-                  ? "bg-[#3a3a3a] text-white"
-                  : "text-gray-400 hover:bg-[#2f2f2f]"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg"
+                  : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
-              Change Password
+              <Lock size={20} />
+              <span>Security</span>
             </button>
           </div>
 
-          {/* RIGHT CONTENT AREA */}
+          {/* Content */}
           <div className="w-2/3 p-6 text-white overflow-y-auto relative">
-            {/* Close button (X) */}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl"
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition"
             >
-              ✕
+              <X size={18} />
             </button>
 
-            {/* PROFILE TAB CONTENT */}
             {activeTab === "profile" && (
               <div>
-                <h2 className="text-xl font-bold mb-4">Profile Settings</h2>
-                <div className="space-y-5">
+                <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  Profile Settings
+                </h2>
+                
+                <div className="space-y-6">
                   {/* Avatar section */}
-                  <div>
-                    <p className="text-gray-400 mb-2">Avatar</p>
-                    <div className="w-20 h-20 rounded-full bg-gray-600" />
-                    <input
-                      type="file"
-                      className="mt-3 text-sm text-gray-300 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:bg-[#3a3a3a] file:text-white"
-                    />
+                  <div className="flex flex-col items-center">
+                    <div className="relative group cursor-pointer">
+                      {avatar ? (
+                        <img
+                          src={avatar}
+                          alt="Avatar"
+                          className="w-24 h-24 rounded-full object-cover ring-4 ring-cyan-500/50"
+                        />
+                      ) : (
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-3xl font-bold text-white ring-4 ring-cyan-500/50">
+                          {getInitials()}
+                        </div>
+                      )}
+                      <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer">
+                        <Camera size={24} className="text-white" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-2">Click to change avatar</p>
                   </div>
 
-                  {/* Username field */}
                   <div>
-                    <p className="text-gray-400">Username</p>
+                    <label className="text-sm text-gray-400 block mb-2">Username</label>
                     <input
                       type="text"
-                      placeholder="Enter username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full mt-2 p-2 rounded bg-[#3a3a3a] outline-none text-white focus:ring-1 focus:ring-cyan-500"
+                      className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
 
-                  {/* Email field */}
                   <div>
-                    <p className="text-gray-400">Email</p>
+                    <label className="text-sm text-gray-400 block mb-2">Email</label>
                     <input
                       type="email"
-                      placeholder="Enter email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full mt-2 p-2 rounded bg-[#3a3a3a] outline-none text-white focus:ring-1 focus:ring-cyan-500"
+                      disabled
+                      className="w-full p-3 rounded-xl bg-gray-800/50 border border-gray-700 text-gray-400 cursor-not-allowed"
                     />
+                    <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
                   </div>
 
-                  {/* Save button */}
                   <button
                     onClick={handleSaveProfile}
-                    className="w-full mt-4 py-2 bg-cyan-500 rounded text-white font-bold hover:bg-cyan-600"
+                    disabled={loading}
+                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl text-white font-semibold hover:shadow-lg transition disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    Save Changes
+                    <Save size={18} />
+                    {loading ? "Saving..." : "Save Changes"}
                   </button>
                 </div>
               </div>
             )}
 
-            {/* CHANGE PASSWORD TAB CONTENT */}
             {activeTab === "password" && (
               <div>
-                <h2 className="text-xl font-bold mb-4">Change Password</h2>
+                <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  Security Settings
+                </h2>
+                
                 <div className="space-y-5">
-                  {/* Current password */}
                   <div>
-                    <p className="text-gray-400">Current Password</p>
+                    <label className="text-sm text-gray-400 block mb-2">Current Password</label>
                     <input
                       type="password"
                       placeholder="Enter current password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className="w-full mt-2 p-2 rounded bg-[#3a3a3a] outline-none text-white focus:ring-1 focus:ring-cyan-500"
+                      className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
 
-                  {/* New password */}
                   <div>
-                    <p className="text-gray-400">New Password</p>
+                    <label className="text-sm text-gray-400 block mb-2">New Password</label>
                     <input
                       type="password"
                       placeholder="Enter new password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="w-full mt-2 p-2 rounded bg-[#3a3a3a] outline-none text-white focus:ring-1 focus:ring-cyan-500"
+                      className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                     />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Minimum 6 characters
-                    </p>
+                    <p className="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
                   </div>
 
-                  {/* Confirm new password */}
                   <div>
-                    <p className="text-gray-400">Confirm New Password</p>
+                    <label className="text-sm text-gray-400 block mb-2">Confirm New Password</label>
                     <input
                       type="password"
-                      placeholder="Re-enter new password"
+                      placeholder="Confirm new password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full mt-2 p-2 rounded bg-[#3a3a3a] outline-none text-white focus:ring-1 focus:ring-cyan-500"
+                      className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
 
-                  {/* Error / success messages */}
-                  {errorMessage && (
-                    <div className="text-red-400 text-sm bg-red-900/20 p-2 rounded">
-                      {errorMessage}
-                    </div>
-                  )}
-                  {successMessage && (
-                    <div className="text-green-400 text-sm bg-green-900/20 p-2 rounded">
-                      {successMessage}
-                    </div>
-                  )}
-
-                  {/* Update password button */}
                   <button
                     onClick={handleUpdatePassword}
-                    className="w-full mt-2 py-2 bg-cyan-500 rounded text-white font-bold hover:bg-cyan-600"
+                    disabled={loading}
+                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl text-white font-semibold hover:shadow-lg transition disabled:opacity-50"
                   >
-                    Update Password
+                    {loading ? "Updating..." : "Update Password"}
                   </button>
                 </div>
               </div>
