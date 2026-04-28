@@ -46,6 +46,7 @@ https://i-bosy-backend.onrender.com
 ```bash
 git clone https://github.com/Fenohasina08/hackaton-frontend-bossy.git (frontend)
 git clone https://github.com/ChristianMDG/i-bosy-backend (backend)
+[Site]:("https://hackaton-frontend-bossy-ipgd.vercel.app/")
 
 cd hackaton-frontend-bossy
 cd i-bosy-backend
