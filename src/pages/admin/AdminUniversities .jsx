@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/admin.service';
 import { 
   Plus, Edit2, Trash2, Search, Sparkles, 
-  X, Check, Eye, EyeOff 
+  X, Check, Eye, EyeOff , Star
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
