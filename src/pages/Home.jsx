@@ -6,10 +6,8 @@ import UniversitiesPage from "./UniversitiesPage";
 export default function Home() {
   return (
     <div className="text-white">
-      <h1>Home Page</h1>
-      <div className="">
-
-        //listes des universites 10
+      
+       <div className="">
         <UniversitiesPage limit={5} />
       </div>
       <p><Temoignages /></p>
