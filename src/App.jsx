@@ -5,26 +5,26 @@ import Signin from "./pages/auth/login/Signin";
 import Signup from "./pages/auth/signup/Signup";
 import UniversitiesPage from "./pages/UniversitiesPage";
 import Setting from "./components/Setting";
+import { Orientation } from "./pages/Orientation"; // ← Ajout de l'import
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
           <Route index element={<Home />} />
+          <Route path="universities" element={<UniversitiesPage />} />
+          <Route path="settings" element={<Setting />} />
+          <Route path="orientation" element={<Orientation />} /> {/* ← Nouvelle route */}
         </Route>
 
         {/* Pages publiques */}
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
 
-        <Route path="/universities" element={<UniversitiesPage />} />
-        <Route path="/settings" element={<Setting />} />
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </BrowserRouter>
   );
