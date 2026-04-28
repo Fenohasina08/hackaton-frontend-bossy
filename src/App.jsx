@@ -5,6 +5,7 @@ import Signin from "./pages/auth/login/Signin";
 import Signup from "./pages/auth/signup/Signup";
 import UniversitiesPage from "./pages/UniversitiesPage";
 import Setting from "./components/Setting";
+import Temoignages from "./pages/Temoignages";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
         <Route path="/universities" element={<UniversitiesPage />} />
         <Route path="/settings" element={<Setting />} />
+        <Route path="/temoignages" element={<Temoignages />} />
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
