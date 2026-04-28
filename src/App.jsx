@@ -15,13 +15,14 @@ function App() {
         {/* Layout principal */}
         <Route path="/" element={<NavigationLayout />}>
           <Route index element={<Home />} />
+          <Route path="/universities" element={<UniversitiesPage />} />
         </Route>
 
         {/* Pages publiques */}
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-
-        <Route path="/universities" element={<UniversitiesPage />} />
+        
+       
         <Route path="/settings" element={<Setting />} />
         <Route path="/temoignages" element={<Temoignages />} />
         {/* fallback */}
