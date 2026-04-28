@@ -1,9 +1,28 @@
-import React from 'react';
-
-function App() {
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import NavigationLayout from "./layouts/NavigationLayout";
+import Home from "./pages/Home";
+import SignIn from "./pages/auth/login/Signin";
+import SignUp from "./pages/auth/signup/Signup";
+import About from "./pages/About";
+export default function App() {
   return (
-     <div></div>
+    <BrowserRouter>
+      <Routes>
+        {/* Pages d'Authentification (Hors du Layout) */}
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        <Route path="/" element={<NavigationLayout />}>
+          {/* Redirection de la racine vers /home */}
+          <Route index element={<Navigate to="/home" replace />} />
+          <Route path="home" element={<Home />} />
+          <Route path="about" element={<About />} />
+
+        </Route>
+
+        {/* Redirection pour les routes inconnues vers home */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
