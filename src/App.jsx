@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Signin from "./pages/auth/login/Signin";
 import Signup from "./pages/auth/signup/Signup";
 import UniversitiesPage from "./pages/UniversitiesPage";
+import Setting from "./components/Setting";
 
 function App() {
   return (
@@ -18,11 +19,9 @@ function App() {
         {/* Pages publiques */}
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<NavigationLayout/>}>
-          <Route path="/universities" element={<UniversitiesPage />} />
-        </Route>
-        
 
+        <Route path="/universities" element={<UniversitiesPage />} />
+        <Route path="/settings" element={<Setting />} />
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
 

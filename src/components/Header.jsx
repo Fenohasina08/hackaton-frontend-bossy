@@ -1,9 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Sun, Moon, Globe, User, LogOut } from 'lucide-react';
 
 export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLang, lang }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Immediately apply the theme class to the root element
+  const applyThemeToDocument = (dark) => {
+    if (dark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      // Optionally inject a CSS variable directly:
+      // document.documentElement.style.setProperty('--theme', 'dark');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      // document.documentElement.style.setProperty('--theme', 'light');
+    }
+  };
+
+  // Sync the theme on mount and whenever isDark changes
+  useEffect(() => {
+    applyThemeToDocument(isDark);
+  }, [isDark]);
+
+  // Local handler that applies the theme AND notifies the parent
+  const handleToggleTheme = () => {
+    const nextDark = !isDark;
+    applyThemeToDocument(nextDark);
+    toggleTheme(); // inform the parent for persistence
+  };
 
   return (
     <header className="h-16 glass flex items-center justify-between px-6 border-b border-neutral-dark z-40">
@@ -30,11 +56,18 @@ export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLan
       </div>
 
       <div className="flex items-center gap-3">
-        <button onClick={toggleTheme} className="p-2 bg-neutral-dark rounded-lg hover:bg-neutral-white/10">
+        {/* Theme button with direct handling */}
+        <button 
+          onClick={handleToggleTheme} 
+          className="p-2 bg-neutral-dark rounded-lg hover:bg-neutral-white/10"
+        >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
-        <button onClick={toggleLang} className="px-3 py-1 bg-neutral-dark rounded-lg text-sm font-bold hover:bg-neutral-white/10">
+        <button 
+          onClick={toggleLang} 
+          className="px-3 py-1 bg-neutral-dark rounded-lg text-sm font-bold hover:bg-neutral-white/10"
+        >
           {lang.toUpperCase()}
         </button>
         
