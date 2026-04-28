@@ -1,4 +1,3 @@
-// src/components/RevealOnScroll.jsx
 import { useEffect, useRef, useState } from 'react';
 
 const RevealOnScroll = ({ children, className = '' }) => {
