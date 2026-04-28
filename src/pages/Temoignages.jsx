@@ -89,7 +89,7 @@ const Temoignages = () => {
   );
 
   return (
-    <div className="min-h-screen w-[89vw] bg-gray-50 dark:bg-gray-900 py-12 sm:py-16 lg:py-20 rounded-3xl">
+    <div className="min-h-screen w-[80vw] bg-gray-50 dark:bg-gray-900 py-12 sm:py-16 lg:py-20 rounded-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* En-tête */}
         <div className="text-center mb-12 sm:mb-16">

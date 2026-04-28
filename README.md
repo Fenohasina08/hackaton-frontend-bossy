@@ -55,7 +55,7 @@ cd i-bosy-backend
 
 ### Équipe Backend
 
-- David : admin  
+- David : admin
 - Christian : déploiement backend, création endpoint university  
 - Valisoa : user management  
 
