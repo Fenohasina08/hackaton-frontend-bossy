@@ -2,7 +2,7 @@ import React from "react";
 import Temoignages from "./Temoignages";
 import UniversitiesPage from "./UniversitiesPage";
 import Hero from "../components/Hero";
-import Footer from "../layouts/Footer";
+import Footer from "../components/Footer";
 import RevealOnScroll from "../components/RevealOnScroll";
 
 export default function About() {

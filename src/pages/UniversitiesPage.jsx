@@ -1,5 +1,7 @@
-import React from "react";
+// src/pages/UniversitiesPage.jsx
+import React, { useState } from "react";
 import UniversityCard from "../components/UniversityCard";
+import { Search, Filter, MapPin, GraduationCap, DollarSign, Star } from 'lucide-react';
 
 const universities = [
   {
@@ -172,28 +174,155 @@ const universities = [
   }
 ];
 
+// Extraction des filtres uniques
+const locations = [...new Set(universities.map(u => u.location))];
+const fields = [...new Set(universities.map(u => u.field))];
+
 export default function UniversitiesPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedField, setSelectedField] = useState('');
+  const [priceRange, setPriceRange] = useState([0, 4000000]);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Filtrer les universités
+  const filteredUniversities = universities.filter(uni => {
+    const matchesSearch = uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          uni.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLocation = !selectedLocation || uni.location === selectedLocation;
+    const matchesField = !selectedField || uni.field === selectedField;
+    const matchesPrice = uni.tuitionRangeMin <= priceRange[1] && 
+                         uni.tuitionRangeMax >= priceRange[0];
+    
+    return matchesSearch && matchesLocation && matchesField && matchesPrice;
+  });
+
   return (
- <div className="overflow-x-hidden min-h-screen bg-[var(--color-neutral-dark)]/90 pt-24 md:pt-28 px-4 md:px-6  max-w-full">
+    <div className="min-h-screen w-[89vw] rounded-3xl bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-24 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+              Trouve Ton Avenir Universitaire
+            </span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+            Explore, compare et choisis l'université qui correspond à ton parcours.
+          </p>
+        </div>
 
-  <div className="flex flex-col items-center justify-center text-center mb-10">
-    <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-      <span className="bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#e7e4d6] text-transparent bg-clip-text">
-        Trouve Ton Avenir Universitaire
-      </span>
-    </h1>
+        {/* Search Bar */}
+        <div className="mb-8">
+          <div className="relative max-w-2xl mx-auto">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Rechercher une université..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
+            />
+          </div>
+        </div>
 
-    <p className="mt-4 text-gray-400 text-sm md:text-lg max-w-2xl">
-      Explore, compare et choisis l’université qui correspond à ton parcours.
-    </p>
-  </div>
+        {/* Filter Toggle Button */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2 px-6 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+          >
+            <Filter className="w-4 h-4" />
+            {showFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
+          </button>
+        </div>
 
-  <div className="grid md:grid-cols-4 gap-5 justify-items-center w-full max-w-7xl mx-auto">
-    {universities.slice(0, 8).map((uni) => (
-  <UniversityCard key={uni.id} university={uni} />
-))}
-  </div>
+        {/* Filters Panel */}
+        {showFilters && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <MapPin className="inline w-4 h-4 mr-1" />
+                Localisation
+              </label>
+              <select
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Toutes les localisations</option>
+                {locations.map(loc => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+            </div>
 
-</div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <GraduationCap className="inline w-4 h-4 mr-1" />
+                Domaine
+              </label>
+              <select
+                value={selectedField}
+                onChange={(e) => setSelectedField(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Tous les domaines</option>
+                {fields.map(field => (
+                  <option key={field} value={field}>{field}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <DollarSign className="inline w-4 h-4 mr-1" />
+                Budget max (Ar)
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="4000000"
+                step="100000"
+                value={priceRange[1]}
+                onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
+                className="w-full"
+              />
+              <div className="flex justify-between mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <span>0 Ar</span>
+                <span>{priceRange[1].toLocaleString()} Ar</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Results Count */}
+        <div className="mb-6 text-center">
+          <p className="text-gray-600 dark:text-gray-400">
+            {filteredUniversities.length} université(s) trouvée(s)
+          </p>
+        </div>
+
+        {/* Universities Grid */}
+        {filteredUniversities.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">😢</div>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              Aucune université trouvée
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Essayez de modifier vos critères de recherche
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredUniversities.map((uni) => (
+              <UniversityCard key={uni.id} university={uni} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
