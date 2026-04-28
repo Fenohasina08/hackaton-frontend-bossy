@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BookOpen, Compass, GraduationCap, Info, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function Sidebar() {
+ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {

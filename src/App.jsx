@@ -3,7 +3,7 @@ import NavigationLayout from "./layouts/NavigationLayout";
 import Home from "./pages/Home";
 import SignIn from "./pages/auth/login/Signin";
 import SignUp from "./pages/auth/signup/Signup";
-
+import About from "./pages/About";
 export default function App() {
   return (
     <BrowserRouter>
@@ -16,7 +16,7 @@ export default function App() {
           {/* Redirection de la racine vers /home */}
           <Route index element={<Navigate to="/home" replace />} />
           <Route path="home" element={<Home />} />
-          
+          <Route path="about" element={<About />} />
 
         </Route>
 
