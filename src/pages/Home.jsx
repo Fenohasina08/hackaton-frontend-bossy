@@ -3,22 +3,33 @@ import Temoignages from "./Temoignages";
 import UniversitiesPage from "./UniversitiesPage";
 import Hero from "../components/Hero";
 import Footer from "../layouts/Footer";
+import RevealOnScroll from "../components/RevealOnScroll";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[20%]"> 
+      {/* Le Hero s’affiche immédiatement (pas besoin du reveal, ou tu peux l’ajouter) */}
+      <section className="w-full min-h-[20vh]">
         <Hero />
-      </div>
-      <div className="w-full h-[50%]">
-        <UniversitiesPage limit={5} />
-      </div>
-      <div className="w-full h-[30%]">      
-         <p><Temoignages /></p>  
-      </div>
-      <div className="w-full h-[10%]">
-      <p><Footer /></p>
-      </div>
+      </section>
+
+      <RevealOnScroll>
+        <section className="w-full min-h-[50vh]">
+          <UniversitiesPage limit={5} />
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <section className="w-full min-h-[30vh]">
+          <Temoignages />
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <section className="w-full min-h-[10vh]">
+          <Footer />
+        </section>
+      </RevealOnScroll>
     </div>
   );
 }
