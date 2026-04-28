@@ -15,6 +15,7 @@ import Setting from "./components/Setting";
 import AdminStats from "./pages/admin/AdminStats";
 import AdminUniversities from "./pages/admin/AdminUniversities ";
 import AdminScholarships from "./pages/admin/AdminScholarships";
+import AdminLogin from "./pages/admin/AdminLogin"
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
           {/* Routes d'authentification */}
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Routes Admin protégées */}
           <Route
