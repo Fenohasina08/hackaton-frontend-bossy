@@ -1,20 +1,20 @@
-import React from "react";
+import React from "react"
 import { Globe, MapPin, Star } from "lucide-react";
 
 export default function UniversityCard({ university }) {
   return (
-    <div className="bg-[#111827] text-white rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
+    <div className="bg-neutral-dark text-neutral-white rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
 
    
       <div className="flex flex-col gap-1">
 
 
-  <h2 className="text-lg font-bold text-white">
+  <h2 className="text-lg font-bold text-neutral-white">
     {university.name}
   </h2>
 
 
-  <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400">
+  <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-mid">
      <img
     src={university.logo || "https://via.placeholder.com/50"}
     alt={university.name}
@@ -38,7 +38,7 @@ export default function UniversityCard({ university }) {
         )}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#FDE047] hover:underline hover:text-yellow-300 transition text-sm"
+        className="text-neutral-yellow hover:underline hover:text-neutral-yellow transition text-sm"
       >
         {university.address}
       </a>
@@ -46,7 +46,7 @@ export default function UniversityCard({ university }) {
 
   </div>
 
-      <p className="text-gray-400 text-sm mt-3 line-clamp-3">
+      <p className="text-neutral-mid text-sm mt-3 line-clamp-3">
         {university.description}
       </p>
 
@@ -55,7 +55,7 @@ export default function UniversityCard({ university }) {
 
       
 
-        <div className="flex items-center gap-1 text-[#FDE047]">
+        <div className="flex items-center gap-1 text-neutral-yellow">
           <Star size={16} />
           {university.averageRating}
         </div>
@@ -63,7 +63,7 @@ export default function UniversityCard({ university }) {
       </div>
 
   
-      <button className="mt-4 w-48 bg-[#2563EB] hover:bg-[#1E40AF] transition py-2 rounded-lg">
+      <button className="mt-4 w-48 bg-accent-blue hover:bg-button transition py-2 rounded-lg">
         Voir détails
       </button>
 

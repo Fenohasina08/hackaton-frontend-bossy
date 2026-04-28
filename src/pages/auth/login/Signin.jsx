@@ -59,7 +59,7 @@ const Signin = () => {
               </div>
 
               <Link
-                to="/"
+                to="/home"
                 className="w-full py-3 bg-cyan-500 rounded-xl text-white font-bold flex items-center justify-center"
                   >
                 Sign In

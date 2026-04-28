@@ -174,16 +174,26 @@ const universities = [
 
 export default function UniversitiesPage() {
   return (
-    <div className="min-h-screen bg-[#0B1120] p-8 ">
+ <div className="overflow-x-hidden min-h-screen bg-[var(--color-neutral-dark)]/90 pt-24 md:pt-28 px-4 md:px-6  max-w-full">
 
-     
+  <div className="flex flex-col items-center justify-center text-center mb-10">
+    <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+      <span className="bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#e7e4d6] text-transparent bg-clip-text">
+        Trouve Ton Avenir Universitaire
+      </span>
+    </h1>
 
-      <div className="grid md:grid-cols-5 gap-9">
-        {universities.map((uni) => (
-          <UniversityCard key={uni.id} university={uni} />
-        ))}
-      </div>
+    <p className="mt-4 text-gray-400 text-sm md:text-lg max-w-2xl">
+      Explore, compare et choisis l’université qui correspond à ton parcours.
+    </p>
+  </div>
 
-    </div>
+  <div className="grid md:grid-cols-4 gap-5 justify-items-center w-full max-w-7xl mx-auto">
+    {universities.slice(0, 4).map((uni) => (
+  <UniversityCard key={uni.id} university={uni} />
+))}
+  </div>
+
+</div>
   );
 }
