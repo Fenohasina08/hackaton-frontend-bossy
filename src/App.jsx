@@ -18,8 +18,10 @@ function App() {
         {/* Pages publiques */}
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-
-        <Route path="/universities" element={<UniversitiesPage />} />
+        <Route path="/" element={<NavigationLayout/>}>
+          <Route path="/universities" element={<UniversitiesPage />} />
+        </Route>
+        
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
