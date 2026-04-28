@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { BookOpen, Compass, GraduationCap, Info, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
-import Setting from './Setting'; // adjust path if needed
+import { NavLink, useNavigate } from 'react-router-dom';
+import { 
+  BookOpen, Compass, GraduationCap, Info, Settings, 
+  LayoutDashboard, ChevronLeft, ChevronRight, LogOut,
+  User
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import Setting from './Setting';
 
-export default function Sidebar() {
+export default function Sidebar() {  // ← Assurez-vous d'avoir "export default"
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => setIsCollapsed(window.innerWidth < 768);
@@ -15,55 +22,108 @@ export default function Sidebar() {
   }, []);
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 p-4 mx-2 rounded-xl transition-all duration-300 whitespace-nowrap overflow-hidden ${
+    `flex items-center gap-3 p-3 mx-2 rounded-xl transition-all duration-300 ${
       isActive 
-        ? 'bg-secondary/20 text-secondary border border-secondary/50' 
-        : 'hover:bg-neutral-white/5 text-neutral-light'
+        ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg' 
+        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
     }`;
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/signin');
+  };
+
+  // Fonction pour obtenir les initiales
+  const getInitials = () => {
+    if (user?.name) return user.name.charAt(0).toUpperCase();
+    if (user?.email) return user.email.charAt(0).toUpperCase();
+    return 'U';
+  };
+
   return (
-    <nav className={`flex flex-col h-full glass transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
-      
-      {/* Header : Logo disparaît quand isCollapsed est true */}
-      <div className="p-6 flex items-center justify-between shrink-0">
-        {!isCollapsed && (
-          <span className="font-bold text-transparent bg-clip-text bg-linear-to-r from-secondary to-accent-blue text-xl">
-            MY APP
-          </span>
+    <>
+      <nav className={`h-screen fixed left-0 top-0 glass flex flex-col border-r border-gray-700 bg-gray-900 transition-all duration-300 z-50 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+        {/* Logo */}
+        <div className="p-4 flex items-center justify-between border-b border-gray-700">
+          {!isCollapsed && (
+            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              UniGuide
+            </span>
+          )}
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)} 
+            className="text-gray-400 p-2 hover:bg-gray-800 rounded-lg transition"
+          >
+            {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+          </button>
+        </div>
+        
+        {/* User Profile (cliquable) */}
+        {user && (
+          <div 
+            onClick={() => setIsSettingsOpen(true)}
+            className="flex items-center gap-3 p-3 m-2 rounded-xl cursor-pointer transition-all duration-300 hover:bg-gray-800 mb-2 border border-gray-700"
+          >
+            {user?.avatar ? (
+              <img 
+                src={user.avatar} 
+                alt="Avatar" 
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                {getInitials()}
+              </div>
+            )}
+            {!isCollapsed && (
+              <div className="flex-1 overflow-hidden">
+                <p className="text-sm font-medium text-white truncate">
+                  {user?.name || user?.email}
+                </p>
+                <p className="text-xs text-gray-400 capitalize">{user?.role || 'USER'}</p>
+              </div>
+            )}
+          </div>
         )}
-        <button 
-          onClick={() => setIsCollapsed(!isCollapsed)} 
-          className="p-1.5 rounded-lg bg-neutral-white/5 hover:bg-neutral-white/10 text-neutral-light transition-colors ml-auto"
-        >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-        </button>
-      </div>
 
-      {/* Liste principale */}
-      <ul className="flex-1 space-y-2 overflow-y-auto py-2">
-        {[
-          { to: "/home", icon: <LayoutDashboard size={20} />, label: "Home" },
-          { to: "/universities", icon: <BookOpen size={20} />, label: "Universities" },
-          { to: "/orientation", icon: <Compass size={20} />, label: "Orientation" },
-          { to: "/formation", icon: <GraduationCap size={20} />, label: "Formation" },
-          { to: "/about", icon: <Info size={20} />, label: "About" },
-        ].map((item) => (
-          <li key={item.to}>
-            <NavLink to={item.to} className={linkClass}>
-              <span className="shrink-0">{item.icon}</span>
-              {!isCollapsed && <span className="transition-opacity duration-300">{item.label}</span>}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+        {/* Navigation Links */}
+        <ul className="flex-1 space-y-1 overflow-y-auto p-2">
+          {[
+            { to: "/home", icon: <LayoutDashboard size={20}/>, label: "Accueil" }, 
+            { to: "/universities", icon: <BookOpen size={20}/>, label: "Universités" }, 
+            { to: "/orientation", icon: <Compass size={20}/>, label: "Orientation" }, 
+            { to: "/about", icon: <Info size={20}/>, label: "À propos" }
+          ].map(item => (
+            <li key={item.to}>
+              <NavLink to={item.to} className={linkClass}>
+                {item.icon} {!isCollapsed && <span>{item.label}</span>}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        
+        {/* Bottom Section */}
+        <div className="p-2 border-t border-gray-700 space-y-1">
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-gray-400 hover:bg-gray-800 hover:text-white w-full`}
+          >
+            <Settings size={20} />
+            {!isCollapsed && <span>Paramètres</span>}
+          </button>
+          
+          <button
+            onClick={handleLogout}
+            className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-red-400 hover:bg-red-500/10 hover:text-red-300 w-full`}
+          >
+            <LogOut size={20} />
+            {!isCollapsed && <span>Déconnexion</span>}
+          </button>
+        </div>
+      </nav>
 
-      {/* Settings : Fixé en bas, toujours visible */}
-      <div className="mt-auto border-t border-neutral-white/10 pt-2 shrink-0">
-        <NavLink to="/settings" className={linkClass}>
-          <span className="shrink-0"><Settings size={20} /></span>
-          {!isCollapsed && <span className="transition-opacity duration-300">Settings</span>}
-        </NavLink>
-      </div>
-    </nav>
+      {/* Settings Modal */}
+      <Setting isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+    </>
   );
 }
