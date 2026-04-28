@@ -1,6 +1,7 @@
+// pages/admin/AdminLogin.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../contexts/AuthProvider';
 import { Shield, Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Moon, Sun } from 'lucide-react';
 import ThreeBackground from '../../components/ThreeBackground';
 import toast from 'react-hot-toast';
@@ -73,12 +74,14 @@ const AdminLogin = () => {
           navigate('/admin/stats');
         } else {
           toast.error('Accès non autorisé. Cette page est réservée aux administrateurs.');
+          setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Erreur de connexion. Veuillez vérifier vos identifiants.');
-    } finally {
       setLoading(false);
     }
   };
@@ -89,45 +92,53 @@ const AdminLogin = () => {
       <ThreeBackground />
       
       {/* Overlay gradient - meilleur contraste selon le thème */}
-      <div className={`absolute inset-0 z-1 ${
-        isDark 
-          ? 'bg-gradient-to-br from-black/70 via-black/50 to-transparent' 
-          : 'bg-gradient-to-br from-white/30 via-white/20 to-transparent'
-      }`} />
+      <div 
+        className={`absolute inset-0 ${
+          isDark 
+            ? 'bg-gradient-to-br from-black/70 via-black/50 to-transparent' 
+            : 'bg-gradient-to-br from-white/30 via-white/20 to-transparent'
+        }`}
+        style={{ zIndex: 1 }}
+      />
       
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="fixed top-6 right-6 z-20 p-3 rounded-full glass-card backdrop-blur-xl transition-all duration-300 hover:scale-110"
+        className="fixed top-6 right-6 z-20 p-3 rounded-full transition-all duration-300 hover:scale-110"
         style={{
           background: 'var(--bg-glass)',
-          border: '1px solid var(--border-color)'
+          border: '1px solid var(--border-color)',
+          backdropFilter: 'blur(10px)'
         }}
+        type="button"
       >
         {isDark ? (
-          <Sun className="w-5 h-5 text-yellow-400" />
+          <Sun className="w-5 h-5" style={{ color: '#F59E0B' }} />
         ) : (
-          <Moon className="w-5 h-5 text-indigo-600" />
+          <Moon className="w-5 h-5" style={{ color: '#4F46E5' }} />
         )}
       </button>
       
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
+      <div className="relative" style={{ zIndex: 10, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+        <div className="w-full" style={{ maxWidth: '28rem' }}>
           {/* Logo and Title */}
-          <div className="text-center mb-8 animate-float">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-2xl mb-6 pulse-glow">
+          <div className="text-center mb-8">
+            <div 
+              className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-2xl mb-6"
+              style={{ animation: 'pulse-glow 2s ease-in-out infinite' }}
+            >
               <Shield className="w-12 h-12 text-white" />
             </div>
             <h1 className="text-4xl font-bold mb-3" style={{ color: 'var(--color-text)' }}>
               Administration
             </h1>
-          <p className="text-lg font-medium" style={{ color: 'var(--color-neutral-light)' }}>
-  Accès réservé aux administrateurs
-</p>
+            <p className="text-lg font-medium" style={{ color: 'var(--color-neutral-light)' }}>
+              Accès réservé aux administrateurs
+            </p>
           </div>
 
-          {/* Glass Card - Amélioré pour meilleure lisibilité */}
+          {/* Glass Card */}
           <div 
             className="rounded-2xl shadow-2xl p-8 transition-all duration-300"
             style={{
@@ -147,7 +158,7 @@ const AdminLogin = () => {
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 transition-colors group-focus-within:text-cyan-500" style={{ color: 'var(--color-neutral-mid)' }} />
+                    <Mail className="h-5 w-5" style={{ color: 'var(--color-neutral-mid)' }} />
                   </div>
                   <input
                     type="email"
@@ -157,8 +168,7 @@ const AdminLogin = () => {
                     style={{
                       background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
                       border: `1px solid var(--border-color)`,
-                      color: 'var(--color-text)',
-                      placeholderColor: 'var(--color-neutral-mid)'
+                      color: 'var(--color-text)'
                     }}
                     placeholder="admin@orientation.mg"
                     autoComplete="email"
@@ -173,7 +183,7 @@ const AdminLogin = () => {
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 transition-colors group-focus-within:text-cyan-500" style={{ color: 'var(--color-neutral-mid)' }} />
+                    <Lock className="h-5 w-5" style={{ color: 'var(--color-neutral-mid)' }} />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -183,8 +193,7 @@ const AdminLogin = () => {
                     style={{
                       background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
                       border: `1px solid var(--border-color)`,
-                      color: 'var(--color-text)',
-                      placeholderColor: 'var(--color-neutral-mid)'
+                      color: 'var(--color-text)'
                     }}
                     placeholder="••••••••"
                     autoComplete="current-password"
@@ -203,7 +212,7 @@ const AdminLogin = () => {
                 </div>
               </div>
 
-              {/* Demo Credentials Hint - Amélioré */}
+              {/* Demo Credentials Hint */}
               <div 
                 className="rounded-lg p-4 transition-all duration-300"
                 style={{
@@ -254,14 +263,7 @@ const AdminLogin = () => {
                   )}
                 </span>
                 
-                {/* Animated gradient overlay on hover */}
-                {!loading && (
-                  <div 
-                    className={`absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-700 transition-transform duration-500 ${
-                      isHovered ? 'translate-x-0' : '-translate-x-full'
-                    }`}
-                  />
-                )}
+                {/* Animated gradient overlay on hover - Supprimé car cause des warnings */}
               </button>
             </form>
 
@@ -271,8 +273,12 @@ const AdminLogin = () => {
                 href="/" 
                 className="inline-flex items-center gap-1 text-sm transition-all duration-300 hover:gap-2"
                 style={{ color: 'var(--color-neutral-mid)' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-neutral-mid)'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--color-secondary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--color-neutral-mid)';
+                }}
               >
                 ← Retour à l'accueil
               </a>
@@ -288,7 +294,7 @@ const AdminLogin = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
@@ -301,10 +307,6 @@ const AdminLogin = () => {
         
         .animate-float {
           animation: float 3s ease-in-out infinite;
-        }
-        
-        .pulse-glow {
-          animation: pulse-glow 2s ease-in-out infinite;
         }
         
         input::placeholder {
