@@ -145,7 +145,7 @@ export default function UniversitiesPage() {
 
         <div className="w-full max-w-4xl rounded-3xl overflow-hidden bg-[#0f172a] border border-white/10 shadow-2xl">
 
-          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-neutral-white">
+          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-neutral-dark">
 
             <img src={uni?.logo} className="w-14 h-14 rounded-xl bg-white p-1" />
 

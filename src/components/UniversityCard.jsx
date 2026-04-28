@@ -3,18 +3,18 @@ import { Globe, MapPin, Star } from "lucide-react";
 
 export default function UniversityCard({ university }) {
   return (
-    <div className="bg-neutral-dark text-neutral-white rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
+    <div className="bg-neutral-mid text-shadow-neutral-mid rounded-xl p-4 shadow-lg hover:scale-105 transition duration-300 w-full max-w-sm flex flex-col ">
 
    
       <div className="flex flex-col gap-1">
 
 
-  <h2 className="text-lg font-bold text-neutral-white">
+  <h2 className="text-lg font-bold text-text-light">
     {university.name}
   </h2>
 
 
-  <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-mid">
+  <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-dark">
      <img
     src={university.logo || "https://via.placeholder.com/50"}
     alt={university.name}
@@ -46,7 +46,7 @@ export default function UniversityCard({ university }) {
 
   </div>
 
-      <p className="text-neutral-mid text-sm mt-3 line-clamp-3">
+      <p className="text-neutral-dark text-sm mt-3 line-clamp-3">
         {university.description}
       </p>
 

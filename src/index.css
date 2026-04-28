@@ -20,9 +20,9 @@
   --color-accent-indigo: #4F46E5;
   --color-background: #F9FAFB;     /* gris très clair */
   --color-neutral-white: #FFFFFF;
-  --color-neutral-dark: #E5E7EB;   /* gris clair (arrière-plan) */
+  --color-neutral-light: #E5E7EB;   /* gris clair (arrière-plan) */
   --color-neutral-mid: #6B7280;
-  --color-neutral-light: #1F2937;  /* texte foncé */
+  --color-neutral-dark: #1F2937;  /* texte foncé */
   --color-button-hover: #1D4ED8;
   --color-text: #1F2937;
   --bg-glass: rgba(255, 255, 255, 0.75);
