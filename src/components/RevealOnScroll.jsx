@@ -9,10 +9,10 @@ const RevealOnScroll = ({ children, className = '' }) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // une seule fois
+          observer.unobserve(entry.target);  
         }
       },
-      { threshold: 0.1 } // déclenche quand 10% de l'élément est visible
+      { threshold: 0.1 }  
     );
 
     if (ref.current) observer.observe(ref.current);

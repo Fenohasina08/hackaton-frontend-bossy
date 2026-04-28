@@ -42,11 +42,11 @@ export default function Sidebar() {
       {/* Liste principale */}
       <ul className="flex-1 space-y-2 overflow-y-auto py-2">
         {[
-          { to: "/home", icon: <LayoutDashboard size={20} />, label: "Home" },
-          { to: "/universities", icon: <BookOpen size={20} />, label: "Universities" },
+          { to: "/home", icon: <LayoutDashboard size={20} />, label: "Accueil" },
+          { to: "/universities", icon: <BookOpen size={20} />, label: "Universités" },
           { to: "/orientation", icon: <Compass size={20} />, label: "Orientation" },
           { to: "/formation", icon: <GraduationCap size={20} />, label: "Formation" },
-          { to: "/about", icon: <Info size={20} />, label: "About" },
+          { to: "/about", icon: <Info size={20} />, label: "À propos" },
         ].map((item) => (
           <li key={item.to}>
             <NavLink to={item.to} className={linkClass}>

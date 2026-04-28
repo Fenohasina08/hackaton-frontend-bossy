@@ -106,14 +106,14 @@ export default function Header({ isAuthenticated, toggleTheme, isDark, toggleLan
             to="/signin"
             className="px-3 md:px-4 py-2 bg-secondary text-primary rounded-lg text-xs md:text-sm font-bold hover:opacity-90 transition-all"
           >
-            Sign In
+            Se connectez
           </Link>
 
           <Link
             to="/signup"
             className="hidden md:block px-4 py-2 bg-secondary text-primary rounded-lg text-sm font-bold hover:opacity-90 transition-all"
           >
-            Sign Up
+            S'inscrire
           </Link>
           </div>
         )}
